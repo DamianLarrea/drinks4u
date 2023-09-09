@@ -8,16 +8,18 @@ namespace API.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly ILogger<ProductsController> _logger;
+        private readonly IProductService productService;
 
-        public ProductsController(ILogger<ProductsController> logger)
+        public ProductsController(ILogger<ProductsController> logger, IProductService productService)
         {
             _logger = logger;
+            this.productService = productService;
         }
 
         [HttpGet]
         public IReadOnlyCollection<Product> GetAsync()
         {
-            return new List<Product>();
+            return productService.GetProducts();
         }
     }
 }
