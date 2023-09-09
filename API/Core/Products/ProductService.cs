@@ -2,7 +2,7 @@
 {
     public interface IProductService
     {
-        IReadOnlyCollection<Product> GetProducts();
+        Task<IReadOnlyCollection<Product>> GetProductsAsync();
     }
 
     public class ProductService : IProductService
@@ -14,6 +14,6 @@
             this.productRepository = productRepository;
         }
 
-        public IReadOnlyCollection<Product> GetProducts() => productRepository.GetAll();
+        public async Task<IReadOnlyCollection<Product>> GetProductsAsync() => await productRepository.GetAllAsync();
     }
 }

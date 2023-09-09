@@ -17,9 +17,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public IReadOnlyCollection<Product> GetAsync()
+        public async Task<IReadOnlyCollection<Product>> GetAsync()
         {
-            return productService.GetProducts();
+            return await productService.GetProductsAsync();
         }
     }
 }

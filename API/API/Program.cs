@@ -1,5 +1,6 @@
 using Core.Products;
-using Data;
+using Data.Products;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IProductService, ProductService>();
-builder.Services.AddTransient<IProductRepository, ProductRepository>();
+
+builder.Services.AddDbContext<IProductRepository, ProductRepository>(
+    opts => opts.UseSqlServer(builder.Configuration.GetConnectionString("Drinks4udb"))
+);
 
 var app = builder.Build();
 

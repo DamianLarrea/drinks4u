@@ -2,6 +2,6 @@
 {
     public interface IProductRepository
     {
-        public IReadOnlyCollection<Product> GetAll();
+        public Task<IReadOnlyCollection<Product>> GetAllAsync();
     }
 }
