@@ -1,10 +1,17 @@
 using Core.Products;
 using Data.Products;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+const string allowedOriginsPolicy = "allowedOriginsPolicy";
+var allowedOrigins = builder.Configuration["AllowedOrigins"]?.Split(',') ?? Array.Empty<string>();
+
+builder.Services.AddCors(opts => {
+    opts.AddPolicy(allowedOriginsPolicy, policy => policy.WithOrigins(allowedOrigins));
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -18,6 +25,8 @@ builder.Services.AddDbContext<IProductRepository, ProductRepository>(
 );
 
 var app = builder.Build();
+
+app.UseCors(allowedOriginsPolicy);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
