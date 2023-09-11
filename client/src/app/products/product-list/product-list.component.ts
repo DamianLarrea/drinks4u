@@ -3,6 +3,7 @@ import { ProductService } from '../product.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators'
 import { product } from '../Product';
+import { CartService } from 'src/app/cart/cart.service';
 
 @Component({
   selector: 'app-product-list',
@@ -11,7 +12,7 @@ import { product } from '../Product';
 })
 export class ProductListComponent implements OnInit {
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService, private cartService: CartService) { }
 
   products: Observable<product[]> | null = null;
 
@@ -22,6 +23,7 @@ export class ProductListComponent implements OnInit {
   }
 
   addProductToCart(product: product) : void {
+    this.cartService.addProduct(product);
   }
 
 }
