@@ -1,0 +1,58 @@
+table {
+    border-spacing: 0;
+    width: 100%;
+    padding: 0.5rem;
+    tr {
+        th {
+            text-align: left;
+            border-bottom: 1px solid;
+        }
+
+        td, th {
+            padding: 1rem;
+            width: 15%;
+
+            &:last-child {
+                width: auto;
+            }
+
+            &.quantity i.fa-minus {
+                padding-right: 1rem;
+            }
+
+            &.quantity i.fa-plus {
+                padding-left: 1rem;
+            }
+        }
+
+        td.remove-cart, td.clear-cart {
+            text-align: right;
+        }
+
+        td.remove-cart button:hover {
+            content: "Remove from cart";
+        }
+
+        &.product:hover {
+            background-color: #ddd;
+        }
+
+        button {
+            background-color: transparent;
+            border: 0;
+            
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+    tr:last-child td {
+        border-top: 1px solid;
+    }
+}
+
+.message-empty-cart {
+    padding-top: 3rem;
+    text-align: center;
+}
