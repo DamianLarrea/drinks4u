@@ -1,0 +1,38 @@
+table {
+    border-spacing: 0;
+    width: 100%;
+    padding: 0.5rem;
+    tr {
+        th {
+            text-align: left;
+            border-bottom: 1px solid;
+        }
+
+        td, th {
+            padding: 1rem;
+            width: 15%;
+
+            &:last-child {
+                width: auto;
+            }
+        }
+
+        td.add-cart {
+            text-align: right;
+        }
+
+        &.product:hover {
+            background-color: #ddd;
+        }
+
+        button {
+            background-color: transparent;
+            border: 0;
+            
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}
+

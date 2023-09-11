@@ -1,0 +1,12 @@
+<table>
+    <tr>
+        <th>Product name</th>
+        <th>Price</th>
+        <th></th>
+    </tr>
+    <tr *ngFor="let product of products | async" class="product">
+        <td>{{product.name}}</td>
+        <td>${{product.price | number: '1.2-2'}}</td>
+        <td class="add-cart"><button (click)="addProductToCart(product)">Add to cart</button></td>
+    </tr>
+</table>
