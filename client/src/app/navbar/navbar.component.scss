@@ -1,0 +1,31 @@
+.navbar {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+  
+    label {
+      font-size: 1.5rem;
+      color: #999;
+      padding: 1rem;
+  
+      &.brand {
+        font-weight: 600;
+      }
+      
+      &.cart {
+        margin-left: auto;
+        margin-right: 1.5rem;
+  
+        i {
+          padding-right: 0.25rem;
+        }
+      }
+  
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
