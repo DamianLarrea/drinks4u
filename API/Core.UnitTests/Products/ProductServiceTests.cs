@@ -32,5 +32,15 @@ namespace Core.UnitTests.Products
 
             result.Should().BeEquivalentTo(repoProducts);
         }
+
+        [Test]
+        public async Task Should_PropagateDbException()
+        {
+            productRepositoryMock.Setup(repo => repo.GetAllAsync()).ThrowsAsync(new DbException());
+
+            var act = () => productService.GetProductsAsync();
+
+            await act.Should().ThrowAsync<DbException>();
+        }
     }
 }
