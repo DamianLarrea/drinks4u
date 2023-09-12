@@ -7,12 +7,10 @@ namespace API.Controllers
     [Route("[controller]")]
     public class ProductsController : ControllerBase
     {
-        private readonly ILogger<ProductsController> _logger;
         private readonly IProductService productService;
 
-        public ProductsController(ILogger<ProductsController> logger, IProductService productService)
+        public ProductsController(IProductService productService)
         {
-            _logger = logger;
             this.productService = productService;
         }
 
