@@ -1,0 +1,7 @@
+<div class="navbar">
+    <label class="brand" routerLink="">Drinks4U</label>
+    <label class="cart" routerLink="/cart">
+        <i class="fa-solid fa-cart-shopping"></i>
+        Cart<span *ngIf="cart.totalQuantity > 0"> ({{cart.totalQuantity}})</span>
+    </label>
+</div>
