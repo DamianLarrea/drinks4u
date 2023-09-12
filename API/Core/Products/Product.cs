@@ -9,7 +9,7 @@
             Price = price;
         }
 
-        public Guid Id { get; set; }
+        public Guid Id { get; }
 
         public string Name { get; }
 
