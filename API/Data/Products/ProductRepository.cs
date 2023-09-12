@@ -14,8 +14,10 @@ namespace Data.Products
             var products = await Products.ToListAsync();
 
             return products
-                .Select(product => new Product(product.Id, product.Name, product.Price))
+                .Select(MapToDomainModel)
                 .ToList();
         }
+
+        private static Product MapToDomainModel(ProductDbModel dbModel) => new Product(dbModel.Id, dbModel.Name, dbModel.Price);
     }
 }
