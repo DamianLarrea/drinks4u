@@ -2,9 +2,15 @@ table {
     border-spacing: 0;
     width: 100%;
     padding: 0.5rem;
+    border-collapse: collapse;
     tr {
         th {
             text-align: left;
+            border-bottom: 1px solid;
+        }
+
+        &.promotion {
+            border-top: 1px solid;
             border-bottom: 1px solid;
         }
 
@@ -26,6 +32,10 @@ table {
         }
 
         td.remove-cart, td.clear-cart {
+            text-align: right;
+        }
+
+        td i.fa-circle-info {
             text-align: right;
         }
 
@@ -51,4 +61,17 @@ table {
 .message-empty-cart {
     padding-top: 3rem;
     text-align: center;
+}
+
+.red {
+    color: red;
+}
+
+.discount-description {
+    color: red;
+    text-wrap: nowrap;
+}
+
+.price-not-applicable {
+    text-decoration-line: line-through;
 }

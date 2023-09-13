@@ -1,12 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 import { CartService } from './cart.service';
 import { product } from '../products/Product';
+import { PromotionsService } from '../promotions/promotions.service';
 
 describe('CartService', () => {
   let service: CartService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        CartService,
+        { provide: PromotionsService, useValue: { promotions: [] } }
+      ]
+    });
     service = TestBed.inject(CartService);
   });
 
@@ -25,8 +31,8 @@ describe('CartService', () => {
         service.addProduct(product);
   
         expect(service.cart.products.length).toBe(1);
-        expect(service.cart.products[0]).toEqual({id: 'abc123', name: 'Product 1', price: 1.99, quantity: 1});
-        expect(service.cart.totalPrice).toBe(1.99);
+        expect(service.cart.products[0]).toEqual({id: 'abc123', name: 'Product 1', price: 1.99, quantity: 1, grossPrice: 1.99, netPrice: 1.99, promotion: null});
+        expect(service.cart.grossPrice).toBe(1.99);
         expect(service.cart.totalQuantity).toBe(1);
     });
   
@@ -41,8 +47,8 @@ describe('CartService', () => {
       service.addProduct(product);
 
       expect(service.cart.products.length).toBe(1);
-      expect(service.cart.products[0]).toEqual({id: 'abc123', name: 'Product 1', price: 1.99, quantity: 2});
-      expect(service.cart.totalPrice).toBe(3.98);
+      expect(service.cart.products[0]).toEqual({id: 'abc123', name: 'Product 1', price: 1.99, quantity: 2, grossPrice: 3.98, netPrice: 3.98, promotion: null});
+      expect(service.cart.grossPrice).toBe(3.98);
       expect(service.cart.totalQuantity).toBe(2);
     });
   
@@ -63,9 +69,9 @@ describe('CartService', () => {
       service.addProduct(product2);
 
       expect(service.cart.products.length).toBe(2);
-      expect(service.cart.products[0]).toEqual({id: 'abc123', name: 'Product 1', price: 1.99, quantity: 1});
-      expect(service.cart.products[1]).toEqual({id: 'xyz789', name: 'Product 2', price: 1.49, quantity: 1});
-      expect(service.cart.totalPrice).toBe(3.48);
+      expect(service.cart.products[0]).toEqual({id: 'abc123', name: 'Product 1', price: 1.99, quantity: 1, grossPrice: 1.99, netPrice: 1.99, promotion: null});
+      expect(service.cart.products[1]).toEqual({id: 'xyz789', name: 'Product 2', price: 1.49, quantity: 1, grossPrice: 1.49, netPrice: 1.49, promotion: null});
+      expect(service.cart.grossPrice).toBe(3.48);
       expect(service.cart.totalQuantity).toBe(2);
     });
   })
@@ -84,7 +90,7 @@ describe('CartService', () => {
       service.decrementProductQuantity(product.id);
 
       expect(service.cart.products.length).toBe(1);
-      expect(service.cart.products[0]).toEqual({id: 'abc123', name: 'Product 1', price: 1.99, quantity: 1});
+      expect(service.cart.products[0]).toEqual({id: 'abc123', name: 'Product 1', price: 1.99, quantity: 1, grossPrice: 1.99, netPrice: 1.99, promotion: null});
     })
 
     it('should not allow a product quantity to drop below 1', () => {
@@ -99,7 +105,7 @@ describe('CartService', () => {
       service.decrementProductQuantity(product.id);
 
       expect(service.cart.products.length).toBe(1);
-      expect(service.cart.products[0]).toEqual({id: 'abc123', name: 'Product 1', price: 1.99, quantity: 1});
+      expect(service.cart.products[0]).toEqual({id: 'abc123', name: 'Product 1', price: 1.99, quantity: 1, grossPrice: 1.99, netPrice: 1.99, promotion: null});
     })
 
     it('should not decrement a quantity for a product other than the requested', () => {
@@ -123,8 +129,8 @@ describe('CartService', () => {
       service.decrementProductQuantity(product2.id);
 
       expect(service.cart.products.length).toBe(2);
-      expect(service.cart.products[0]).toEqual({id: 'abc123', name: 'Product 1', price: 1.99, quantity: 2});
-      expect(service.cart.products[1]).toEqual({id: 'xyz789', name: 'Product 2', price: 1.49, quantity: 1});
+      expect(service.cart.products[0]).toEqual({id: 'abc123', name: 'Product 1', price: 1.99, quantity: 2, grossPrice: 3.98, netPrice: 3.98, promotion: null});
+      expect(service.cart.products[1]).toEqual({id: 'xyz789', name: 'Product 2', price: 1.49, quantity: 1, grossPrice: 1.49, netPrice: 1.49, promotion: null});
     })
 
     it('should correctly adjust total quantity', () => {
@@ -156,7 +162,7 @@ describe('CartService', () => {
 
       service.decrementProductQuantity(product.id);
 
-      expect(Math.round(service.cart.totalPrice * 100) / 100).toBe(3.98);
+      expect(Math.round(service.cart.grossPrice * 100) / 100).toBe(3.98);
     })
   })
 
@@ -173,7 +179,7 @@ describe('CartService', () => {
       service.incrementProductQuantity(product.id);
 
       expect(service.cart.products.length).toBe(1);
-      expect(service.cart.products[0]).toEqual({id: 'abc123', name: 'Product 1', price: 1.99, quantity: 2});
+      expect(service.cart.products[0]).toEqual({id: 'abc123', name: 'Product 1', price: 1.99, quantity: 2, grossPrice: 3.98, netPrice: 3.98, promotion: null});
     })
 
     it('should only increment the requested product quantity', () => {
@@ -195,8 +201,8 @@ describe('CartService', () => {
       service.incrementProductQuantity(product2.id);
 
       expect(service.cart.products.length).toBe(2);
-      expect(service.cart.products[0]).toEqual({id: 'abc123', name: 'Product 1', price: 1.99, quantity: 1});
-      expect(service.cart.products[1]).toEqual({id: 'xyz789', name: 'Product 2', price: 1.49, quantity: 2});
+      expect(service.cart.products[0]).toEqual({id: 'abc123', name: 'Product 1', price: 1.99, quantity: 1, grossPrice: 1.99, netPrice: 1.99, promotion: null});
+      expect(service.cart.products[1]).toEqual({id: 'xyz789', name: 'Product 2', price: 1.49, quantity: 2, grossPrice: 2.98, netPrice: 2.98, promotion: null});
     })
 
     it('should correctly update the cart quantity', () => {
@@ -226,7 +232,7 @@ describe('CartService', () => {
       service.incrementProductQuantity(product.id);
 
       expect(service.cart.products.length).toBe(1);
-      expect(service.cart.totalPrice).toBe(3.98);
+      expect(service.cart.grossPrice).toBe(3.98);
     })
   })
 
@@ -249,7 +255,7 @@ describe('CartService', () => {
 
       service.removeProduct(service.cart.products[0]);
 
-      expect(service.cart.products[0]).toEqual({id: 'xyz789', name: 'Product 2', price: 1.49, quantity: 1});
+      expect(service.cart.products[0]).toEqual({id: 'xyz789', name: 'Product 2', price: 1.49, quantity: 1, grossPrice: 1.49, netPrice: 1.49, promotion: null});
     })
 
     it('should correctly update the cart price', () => {
@@ -270,7 +276,7 @@ describe('CartService', () => {
 
       service.removeProduct(service.cart.products[0]);
 
-      expect(service.cart.totalPrice).toBe(1.49);
+      expect(service.cart.grossPrice).toBe(1.49);
     })
 
     it('should correctly update the cart quantity', () => {
@@ -315,7 +321,7 @@ describe('CartService', () => {
       service.clearCart();
 
       expect(service.cart.products.length).toBe(0);
-      expect(service.cart.totalPrice).toBe(0);
+      expect(service.cart.grossPrice).toBe(0);
       expect(service.cart.totalQuantity).toBe(0);
     })
   })
