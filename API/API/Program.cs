@@ -1,5 +1,7 @@
 using Core.Products;
+using Core.Promotions;
 using Data.Products;
+using Data.Promotions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 
@@ -18,9 +20,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddTransient<IProductService, ProductService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddDbContext<IProductRepository, ProductRepository>(
+    opts => opts.UseSqlServer(builder.Configuration.GetConnectionString("Drinks4udb"))
+);
+
+builder.Services.AddScoped<IPromotionService, PromotionService>();
+
+builder.Services.AddDbContext<IPromotionRepository, PromotionRepository>(
     opts => opts.UseSqlServer(builder.Configuration.GetConnectionString("Drinks4udb"))
 );
 

@@ -2,7 +2,7 @@
     <tr>
         <th>Product</th>
         <th>Unit price</th>
-        <th class="quantity">Quantity</th>
+        <th>Quantity</th>
         <th>Total</th>
         <th></th>
     </tr>
@@ -17,19 +17,36 @@
             <button (click)="incrementProductQuantity(product.id)">
                 <i class="fa-solid fa-plus"></i>
             </button>
-        </td>    
-        <td>${{product.price * product.quantity | number: '1.2-2'}}</td>
+        </td>
+        <td>
+            <span [ngClass]="{'price-not-applicable': product.promotion}">${{product.grossPrice | number: '1.2-2'}}</span>
+            <div *ngIf="product.promotion">
+                <span class="discount-description">${{product.netPrice | number: '1.2-2'}} ({{product.promotion.description}})</span>
+            </div>
+        </td>
         <td class="remove-cart">
             <button (click)="removeFromCart(product)">
                 <i class="fa-solid fa-trash"></i>
             </button>
         </td>
     </tr>
+    <tr class="promotion" *ngIf="cart.promotion">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="discount-description">-${{cart.promotion.discountValue | number: '1.2-2'}} ({{cart.promotion.description}})</td>
+        <td></td>
+    </tr>
     <tr>
         <td>Total</td>
         <td></td>
         <td></td>
-        <td>${{cart.totalPrice | number: '1.2-2'}}</td>
+        <td>
+            <span [ngClass]="{'price-not-applicable': cart.grossPrice !== cart.netPrice}">${{cart.grossPrice | number: '1.2-2'}}</span>
+            <div *ngIf="cart.grossPrice !== cart.netPrice" class="red">
+                ${{cart.netPrice | number: '1.2-2'}}
+            </div>
+        </td>
         <td class="clear-cart"><button (click)="clearCart()">Clear cart</button></td>
     </tr>
 </table>
