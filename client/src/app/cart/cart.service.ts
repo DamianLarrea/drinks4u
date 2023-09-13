@@ -20,7 +20,7 @@ export class CartService {
 
   public addProduct(product: product): void {
 
-    var cartProduct = this.cart.products.find(p => p.id == product.id);
+    let cartProduct = this.cart.products.find(p => p.id == product.id);
 
     if (cartProduct == null) {
       this.cart.products.push({ 
@@ -40,7 +40,7 @@ export class CartService {
   }
 
   public decrementProductQuantity(productId: string): void {
-    var cartProduct = this.cart.products.find(p => p.id == productId);
+    let cartProduct = this.cart.products.find(p => p.id == productId);
 
     if (cartProduct && cartProduct.quantity > 1) {
       cartProduct.quantity--;
@@ -96,7 +96,7 @@ export class CartService {
 
     let multibuyPromotion = promotions.find(p => p.type == PromotionType.MultiBuy && p.appliesToProductId == cartProduct.id);
     if (multibuyPromotion && cartProduct.quantity >= multibuyPromotion.triggerQuantity) {
-      var freeQuantity = Math.trunc(cartProduct.quantity / multibuyPromotion.triggerQuantity) * multibuyPromotion.discountQuantity;
+      let freeQuantity = Math.trunc(cartProduct.quantity / multibuyPromotion.triggerQuantity) * multibuyPromotion.discountQuantity;
       cartProduct.netPrice = cartProduct.grossPrice - (cartProduct.price * freeQuantity);
       cartProduct.promotion = multibuyPromotion;
     }
@@ -113,12 +113,12 @@ export class CartService {
   }
 
   private applyCartPromotions(): void {
-    var promotions = this.promotionService.promotions;
+    let promotions = this.promotionService.promotions;
 
     // Assumption: one cart promotion active at any given time
-    var promotion = promotions.find(p => p.type == PromotionType.Cart);
+    let promotion = promotions.find(p => p.type == PromotionType.Cart);
 
-    var productDiscountedTotal = this.cart.products.reduce((value, product) => value += product.netPrice, 0);
+    let productDiscountedTotal = this.cart.products.reduce((value, product) => value += product.netPrice, 0);
     if (promotion && productDiscountedTotal >= promotion.triggerPrice) {
       this.cart.netPrice = productDiscountedTotal - promotion.discountValue;
       this.cart.promotion = promotion;
